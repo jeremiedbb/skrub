@@ -7,8 +7,6 @@ if [[ "$DEPS_VERSION" == "nightly" ]]; then
     
     # pyarrow nightly builds are not hosted on anaconda.org
     pip install --extra-index-url https://pypi.fury.io/arrow-nightlies/ --prefer-binary --pre pyarrow
-
-    pip install --progress-bar off --only-binary :all: --no-binary liac-arff --upgrade ".[dev]"
-else
-    pip install --progress-bar off --only-binary :all: --no-binary liac-arff --upgrade ".[$DEPS_VERSION]"
 fi
+
+pip install --progress-bar off --only-binary :all: --no-binary liac-arff --upgrade ".[$DEPS_VERSION]"
