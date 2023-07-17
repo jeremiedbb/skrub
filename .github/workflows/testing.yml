@@ -27,6 +27,18 @@ jobs:
           commit-filter: '[skip ci];[ci skip];[skip github]'
           commit-filter-separator: ';'
 
+  run_nightly:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ github.event_name == 'schedule' || contains(steps.get_head_commit_message.COMMIT_MSG, '[deps nightly]') }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - id: get_head_commit_message
+        name: get head commit message
+        run: echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
+
   latest:
     needs: check_skip
     if: ${{ needs.check_skip.outputs.skip == 'false' }}
@@ -76,26 +88,11 @@ jobs:
         name: 'Upload coverage to CodeCov'
 
   nightly:
-    # if: ${{ github.event_name == 'schedule' || contains(github.event.head_commit.message, '[deps nightly]') }}
+    needs: run_nightly
+    if: ${{ needs.run_nightly.outputs.run == 'true' }}
     runs-on: ubuntu-latest
     name: test against nighlty dependencies
     steps:
-      - shell: bash {0}
-        env:
-          IS_SCHEDULED: ${{ github.event_name == 'schedule' }}
-          COMMIT_MESSAGE: ${{ github.event.pull_request.head.message }}
-          SHA: ${{ github.event.pull_request.head.sha }}
-          REF: ${{ github.event.pull_request.head.ref }}
-          IN_COMMIT_MESSAGE: ${{ contains(github.event.pull_request.head.message, '[deps nightly]') }}
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: |
-          echo "DEBUG"
-          echo "$IS_SCHEDULED"
-          echo "$COMMIT_MESSAGE"
-          echo "$SHA"
-          echo "$REF"
-          echo "$IN_COMMIT_MESSAGE"
-          echo "$GITHUB_CONTEXT"
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
