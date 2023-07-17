@@ -2,7 +2,7 @@
 
 set -x
 
-if [[ -v INSTALL_NIGHTLY ]]; then
+if [[ "$INSTALL_NIGHTLY" == "true" ]]; then
     echo "Installing development dependency wheels"
     dev_anaconda_url=https://pypi.anaconda.org/scientific-python-nightly-wheels/simple
     pip install --pre --upgrade --timeout=60 --extra-index $dev_anaconda_url numpy pandas scikit-learn scipy

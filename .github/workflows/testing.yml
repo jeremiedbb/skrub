@@ -102,7 +102,7 @@ jobs:
         run: ./build_tools/github/install.sh
         name: 'Install skrub'
         env:
-          INSTALL_NIGHTLY: true
+          INSTALL_NIGHTLY: "true"
           DEPS_VERSION: "dev"
       - shell: bash {0}
         run: ./build_tools/github/test.sh
