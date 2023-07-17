@@ -30,7 +30,7 @@ jobs:
   run_nightly:
     runs-on: ubuntu-latest
     outputs:
-      run: ${{ github.event_name == 'schedule' || contains(steps.get_head_commit_message.COMMIT_MSG, '[deps nightly]') }}
+      run: ${{ github.event_name == 'schedule' || contains(steps.get_head_commit_message.outputs.COMMIT_MSG, '[deps nightly]') }}
     steps:
       - uses: actions/checkout@v3
         with:
