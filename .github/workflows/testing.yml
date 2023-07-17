@@ -92,8 +92,6 @@ jobs:
     if: ${{ needs.run_nightly.outputs.run == 'true' }}
     runs-on: ubuntu-latest
     name: test against nighlty dependencies
-    env:
-      DEPS_VERSION: "dev"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -104,7 +102,8 @@ jobs:
         run: ./build_tools/github/install.sh
         name: 'Install skrub'
         env:
-          DEPS_VERSION: "nighlty"
+          INSTALL_NIGHTLY: true
+          DEPS_VERSION: "dev"
       - shell: bash {0}
         run: ./build_tools/github/test.sh
         name: 'Run tests'

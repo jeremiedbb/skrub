@@ -1,6 +1,8 @@
 #!/bin/bash -e
 
-if [[ "$DEPS_VERSION" == "nightly" ]]; then
+set -x
+
+if [[ -v INSTALL_NIGHTLY ]]; then
     echo "Installing development dependency wheels"
     dev_anaconda_url=https://pypi.anaconda.org/scientific-python-nightly-wheels/simple
     pip install --pre --upgrade --timeout=60 --extra-index $dev_anaconda_url numpy pandas scikit-learn scipy
