@@ -37,8 +37,9 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - id: get_head_commit_message
         name: get head commit message
-        run: echo "$(git show -s --format=%s)"
-        run: echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "$(git show -s --format=%s)"
+          echo "COMMIT_MSG=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
 
   latest:
     needs: check_skip
