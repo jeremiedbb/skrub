@@ -84,11 +84,13 @@ jobs:
         env:
           IS_SCHEDULED: ${{ github.event_name == 'schedule' }}
           COMMIT_MESSAGE: ${{ github.event.pull_request.head_commit.message }}
+          SHA: ${{ github.event.pull_request.head.sha }}
           IN_COMMIT_MESSAGE: ${{ contains(github.event.pull_request.head_commit.message, '[deps nightly]') }}
         run: |
           echo "DEBUG"
           echo "$IS_SCHEDULED"
           echo "$COMMIT_MESSAGE"
+          echo "$SHA"
           echo "$IN_COMMIT_MESSAGE"
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -103,3 +105,8 @@ jobs:
       - shell: bash {0}
         run: ./build_tools/github/test.sh
         name: 'Run tests'
+
+
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
