@@ -62,6 +62,7 @@ def test_deduplicate(
 
 
 def test_compute_ngram_distance() -> None:
+    # it needs a docstring !
     words = np.array(["aac", "aaa", "aaab", "aaa", "aaab", "aaa", "aaab", "aaa"])
     distance = compute_ngram_distance(words)
     distance = squareform(distance)
